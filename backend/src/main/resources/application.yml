@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: vendor-management-system
+  
+  datasource:
+    url: jdbc:mysql://localhost:3306/vms_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+jwt:
+  secret: VmVuZG9yTWFuYWdlbWVudFN5c3RlbUxlbmd0a0tleUZvclNlY3VyZUF1dGhlbnRpY2F0aW9u
+  expiration: 86400000
+
+logging:
+  level:
+    com.vms: DEBUG
+    org.springframework.security: DEBUG
