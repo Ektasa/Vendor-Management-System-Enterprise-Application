@@ -1,5 +1,6 @@
 package com.vms.controller;
 
+import com.vms.dto.UserDTO;
 import com.vms.entity.User;
 import com.vms.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +19,16 @@ public class AdminController {
     private final UserRepository userRepository;
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> users = userRepository.findAll().stream()
-                .map(user -> UserDTO.builder()
-                        .id(user.getId())
-                        .email(user.getEmail())
-                        .fullName(user.getFullName())
-                        .role(user.getRole())
-                        .enabled(user.isEnabled())
-                        .build())
+    public ResponseEntity<List<UserDTO.userDTO>> getAllUsers() {
+        List<UserDTO.userDTO> users = userRepository.findAll().stream()
+                .map(user ->
+                    UserDTO.userDTO.builder()
+                            .id(user.getId())
+                            .email(user.getEmail())
+                            .fullName(user.getFullName())
+                            .role(user.getRole())
+                            .enabled(user.isEnabled())
+                            .build())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(users);
     }
@@ -40,15 +42,4 @@ public class AdminController {
         return ResponseEntity.ok("User status toggled successfully");
     }
 
-    @lombok.Data
-    @lombok.Builder
-    @lombok.NoArgsConstructor
-    @lombok.AllArgsConstructor
-    public static class UserDTO {
-        private Long id;
-        private String email;
-        private String fullName;
-        private User.Role role;
-        private boolean enabled;
-    }
 }

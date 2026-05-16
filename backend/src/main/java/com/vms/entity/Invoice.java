@@ -1,4 +1,8 @@
+package com.vms.entity;
 
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "invoices")
@@ -10,7 +14,8 @@ public class Invoice {
     @Column(name = "invoice_number", nullable = false, unique = true)
     private String invoiceNumber;
 
-    @Column(name = "invoice_date", nullable = false)
+    @Column(name = "invoice_date",
+     nullable = false)
     private LocalDate invoiceDate;
 
     @Column(name = "customer_name", nullable = false)

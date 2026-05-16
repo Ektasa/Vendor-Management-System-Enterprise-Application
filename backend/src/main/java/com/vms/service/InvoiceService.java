@@ -1,3 +1,10 @@
+package com.vms.service;
+
+import com.vms.entity.Invoice;
+import com.vms.repository.InvoiceRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class InvoiceService {
@@ -7,16 +14,16 @@ public class InvoiceService {
         this.invoiceRepository = invoiceRepository;
     }
 
-    public InvoiceData createInvoice(InvoiceData invoiceData) {
+    public Invoice createInvoice(Invoice invoiceData) {
         return invoiceRepository.save(invoiceData);
     }
 
-    public InvoiceData getInvoiceById(Long id) {
+    public Invoice getInvoiceById(Long id) {
         return invoiceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Invoice not found"));
     }
 
-    public List<InvoiceData> getAllInvoices() {
+    public List<Invoice> getAllInvoices() {
         return invoiceRepository.findAll();
     }
 
