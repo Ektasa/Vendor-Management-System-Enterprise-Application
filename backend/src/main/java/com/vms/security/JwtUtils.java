@@ -1,6 +1,7 @@
 package com.vms.security;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +22,19 @@ public class JwtUtils {
     private long expiration;
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = secret.getBytes();
+        byte[] keyBytes;
+        try {
+            // Try to decode Base64 first (common practice to store secret as base64)
+            keyBytes = Decoders.BASE64.decode(secret);
+        } catch (IllegalArgumentException e) {
+            // Not base64 - fall back to raw bytes (UTF-8)
+            keyBytes = secret.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        }
+
+        if (keyBytes.length < 32) {
+            throw new IllegalStateException("The JWT signing key is too short. It must be at least 256 bits (32 bytes). Please provide a sufficiently long secret in application.yml (base64 is recommended).");
+        }
+
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -39,11 +52,12 @@ public class JwtUtils {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
+        // For JJWT 0.11+ use parserBuilder with signing key
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
                 .build()
-                .parseSignedClaims(token)
-                .getPayload();
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     private Boolean isTokenExpired(String token) {
