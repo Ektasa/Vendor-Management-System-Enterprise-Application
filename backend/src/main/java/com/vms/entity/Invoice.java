@@ -1,11 +1,16 @@
 package com.vms.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "invoices")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +20,7 @@ public class Invoice {
     private String invoiceNumber;
 
     @Column(name = "invoice_date",
-     nullable = false)
+            nullable = false)
     private LocalDate invoiceDate;
 
     @Column(name = "customer_name", nullable = false)
@@ -41,58 +46,4 @@ public class Invoice {
 
     @Column(name = "total_amount", nullable = false)
     private double totalAmount;
-
-    // Getters and setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    public LocalDate getInvoiceDate() {
-        return invoiceDate;
-    }
-
-
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-
-
-    public String getCustomerAddress() {
-        return customerAddress;
-    }
-
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
-
-
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public String getItemDescription() {
-        return itemDescription;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
-
-    
 }
