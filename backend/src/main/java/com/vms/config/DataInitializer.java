@@ -3,53 +3,51 @@ package com.vms.config;
 import com.vms.entity.User;
 import com.vms.entity.User.Role;
 import com.vms.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
-@Slf4j
 public class DataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public DataInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public void run(String... args) {
         if (userRepository.count() == 0) {
             // Create Admin
-            User admin = User.builder()
-                    .email("admin@vms.com")
-                    .password(passwordEncoder.encode("admin123"))
-                    .fullName("System Admin")
-                    .role(Role.ADMIN)
-                    .enabled(true)
-                    .build();
+            User admin = new User();
+            admin.setEmail("admin@vms.com");
+            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setFullName("System Admin");
+            admin.setRole(Role.ADMIN);
+            admin.setEnabled(true);
             userRepository.save(admin);
 
             // Create Manager
-            User manager = User.builder()
-                    .email("manager@vms.com")
-                    .password(passwordEncoder.encode("manager123"))
-                    .fullName("Approval Manager")
-                    .role(Role.MANAGER)
-                    .enabled(true)
-                    .build();
+            User manager = new User();
+            manager.setEmail("manager@vms.com");
+            manager.setPassword(passwordEncoder.encode("manager123"));
+            manager.setFullName("Approval Manager");
+            manager.setRole(Role.MANAGER);
+            manager.setEnabled(true);
             userRepository.save(manager);
 
             // Create Vendor
-            User vendor = User.builder()
-                    .email("vendor@vms.com")
-                    .password(passwordEncoder.encode("vendor123"))
-                    .fullName("Test Vendor")
-                    .role(Role.VENDOR)
-                    .enabled(true)
-                    .build();
+            User vendor = new User();
+            vendor.setEmail("vendor@vms.com");
+            vendor.setPassword(passwordEncoder.encode("vendor123"));
+            vendor.setFullName("Test Vendor");
+            vendor.setRole(Role.VENDOR);
+            vendor.setEnabled(true);
             userRepository.save(vendor);
 
-            log.info("Default users created: admin@vms.com, manager@vms.com, vendor@vms.com");
+            System.out.println("Default users created: admin@vms.com, manager@vms.com, vendor@vms.com");
         }
     }
 }
