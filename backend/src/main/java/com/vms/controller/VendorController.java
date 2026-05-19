@@ -4,7 +4,6 @@ import com.vms.dto.VendorDTO;
 import com.vms.dto.VendorRequest;
 import com.vms.entity.Vendor.VendorStatus;
 import com.vms.service.VendorService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,9 +14,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/vendors")
-@RequiredArgsConstructor
 public class VendorController {
     private final VendorService vendorService;
+
+    public VendorController(VendorService vendorService) {
+        this.vendorService = vendorService;
+    }
 
     @PostMapping
     @PreAuthorize("hasRole('VENDOR')")
