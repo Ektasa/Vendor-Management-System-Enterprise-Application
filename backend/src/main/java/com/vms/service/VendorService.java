@@ -7,7 +7,6 @@ import com.vms.entity.Vendor;
 import com.vms.entity.Vendor.VendorStatus;
 import com.vms.repository.UserRepository;
 import com.vms.repository.VendorRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +15,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class VendorService {
     private final VendorRepository vendorRepository;
     private final UserRepository userRepository;
+
+    public VendorService(VendorRepository vendorRepository, UserRepository userRepository) {
+        this.vendorRepository = vendorRepository;
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     @PreAuthorize("hasRole('VENDOR')")
@@ -31,18 +34,17 @@ public class VendorService {
             throw new RuntimeException("Vendor profile already exists for this user");
         }
 
-        Vendor vendor = Vendor.builder()
-                .companyName(request.getCompanyName())
-                .contactPerson(request.getContactPerson())
-                .email(request.getEmail())
-                .phone(request.getPhone())
-                .address(request.getAddress())
-                .city(request.getCity())
-                .country(request.getCountry())
-                .description(request.getDescription())
-                .status(VendorStatus.PENDING)
-                .user(user)
-                .build();
+        Vendor vendor = new Vendor();
+        vendor.setCompanyName(request.getCompanyName());
+        vendor.setContactPerson(request.getContactPerson());
+        vendor.setEmail(request.getEmail());
+        vendor.setPhone(request.getPhone());
+        vendor.setAddress(request.getAddress());
+        vendor.setCity(request.getCity());
+        vendor.setCountry(request.getCountry());
+        vendor.setDescription(request.getDescription());
+        vendor.setStatus(VendorStatus.PENDING);
+        vendor.setUser(user);
 
         vendorRepository.save(vendor);
         return mapToDTO(vendor);
@@ -103,22 +105,22 @@ public class VendorService {
     }
 
     private VendorDTO mapToDTO(Vendor vendor) {
-        return VendorDTO.builder()
-                .id(vendor.getId())
-                .companyName(vendor.getCompanyName())
-                .contactPerson(vendor.getContactPerson())
-                .email(vendor.getEmail())
-                .phone(vendor.getPhone())
-                .address(vendor.getAddress())
-                .city(vendor.getCity())
-                .country(vendor.getCountry())
-                .status(vendor.getStatus())
-                .userId(vendor.getUser().getId())
-                .userFullName(vendor.getUser().getFullName())
-                .documentsUrl(vendor.getDocumentsUrl())
-                .description(vendor.getDescription())
-                .createdAt(vendor.getCreatedAt())
-                .updatedAt(vendor.getUpdatedAt())
-                .build();
+        VendorDTO dto = new VendorDTO();
+        dto.setId(vendor.getId());
+        dto.setCompanyName(vendor.getCompanyName());
+        dto.setContactPerson(vendor.getContactPerson());
+        dto.setEmail(vendor.getEmail());
+        dto.setPhone(vendor.getPhone());
+        dto.setAddress(vendor.getAddress());
+        dto.setCity(vendor.getCity());
+        dto.setCountry(vendor.getCountry());
+        dto.setStatus(vendor.getStatus());
+        dto.setUserId(vendor.getUser().getId());
+        dto.setUserFullName(vendor.getUser().getFullName());
+        dto.setDocumentsUrl(vendor.getDocumentsUrl());
+        dto.setDescription(vendor.getDescription());
+        dto.setCreatedAt(vendor.getCreatedAt());
+        dto.setUpdatedAt(vendor.getUpdatedAt());
+        return dto;
     }
 }
