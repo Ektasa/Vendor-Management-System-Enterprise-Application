@@ -52,12 +52,12 @@ public class JwtUtils {
     }
 
     private Claims extractAllClaims(String token) {
-        // For JJWT 0.11+ use parserBuilder with signing key
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+        // JJWT 0.12.3 uses parser().verifyWith() API
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private Boolean isTokenExpired(String token) {
