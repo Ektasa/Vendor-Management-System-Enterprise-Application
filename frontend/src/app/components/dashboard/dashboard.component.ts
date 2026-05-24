@@ -1,14 +1,23 @@
 import { Component, OnInit } from '@angular/core';
+// @ts-ignore
 import { CommonModule } from '@angular/common';
+// @ts-ignore
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { VendorService } from '../services/vendor.service';
-import { Vendor } from '../models/vendor.model';
+import { AuthService } from '../../services/auth.service';
+import { VendorService } from '../../services/vendor.service';
+import { Vendor } from '../../models/vendor.model';
+// @ts-ignore
+import {FormsModule} from "@angular/forms";
 
+// @ts-ignore
+// @ts-ignore
+// @ts-ignore
+// @ts-ignore
+// @ts-ignore
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="navbar">
       <div class="navbar-brand">Vendor Management System</div>
