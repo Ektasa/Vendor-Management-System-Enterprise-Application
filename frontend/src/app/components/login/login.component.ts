@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+// @ts-ignore
 import { CommonModule } from '@angular/common';
+// @ts-ignore
 import { FormsModule } from '@angular/forms';
+// @ts-ignore
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-login',
