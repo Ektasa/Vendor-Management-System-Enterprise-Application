@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+// @ts-ignore
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Vendor, VendorRequest } from '../models/vendor.model';
