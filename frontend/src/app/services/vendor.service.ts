@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-// @ts-ignore
+
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Vendor, VendorRequest } from '../models/vendor.model';
@@ -8,7 +8,7 @@ import { Vendor, VendorRequest } from '../models/vendor.model';
   providedIn: 'root'
 })
 export class VendorService {
-  private apiUrl = 'http://localhost:8080/api/vendors';
+  private apiUrl = 'http://localhost:8080/vendors';
 
   constructor(private http: HttpClient) {}
 

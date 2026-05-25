@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-// @ts-ignore
-import { authService } from '../services/auth.service';
-import {AuthService} from "../../services/auth.service";
+
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   template: `
     <div class="auth-container">
       <div class="auth-box">
@@ -17,19 +15,19 @@ import {AuthService} from "../../services/auth.service";
         <form (ngSubmit)="onRegister()">
           <div class="form-group">
             <label>Full Name</label>
-            <input type="text" [(ngModel)]="fullName" name="fullName" required>
+            <input type="text" [value]="fullName" (input)="fullName = $any($event.target).value" name="fullName" required>
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" [(ngModel)]="email" name="email" required>
+            <input type="email" [value]="email" (input)="email = $any($event.target).value" name="email" required>
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input type="password" [(ngModel)]="password" name="password" required>
+            <input type="password" [value]="password" (input)="password = $any($event.target).value" name="password" required>
           </div>
           <div class="form-group">
             <label>Role</label>
-            <select [(ngModel)]="role" name="role" required>
+            <select [value]="role" (change)="role = $any($event.target).value" name="role" required>
               <option value="VENDOR">Vendor</option>
               <option value="MANAGER">Manager</option>
               <option value="ADMIN">Admin</option>

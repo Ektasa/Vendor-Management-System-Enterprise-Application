@@ -1,28 +1,27 @@
 import { Component } from '@angular/core';
-// @ts-ignore
+
 import { CommonModule } from '@angular/common';
-// @ts-ignore
-import { FormsModule } from '@angular/forms';
-// @ts-ignore
+import { RouterModule } from '@angular/router';
+
 import { Router } from '@angular/router';
 import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, RouterModule],
   template: `
     <div class="auth-container">
       <div class="auth-box">
         <h2>Vendor Management System</h2>
-        <form (ngSubmit)="onLogin()">
+        <form (submit)="onLogin(emailInput.value, passwordInput.value)">
           <div class="form-group">
             <label>Email</label>
-            <input type="email" [(ngModel)]="email" name="email" required>
+            <input #emailInput type="email" name="email" required>
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input type="password" [(ngModel)]="password" name="password" required>
+            <input #passwordInput type="password" name="password" required>
           </div>
           <button type="submit" class="btn btn-primary" style="width: 100%">Login</button>
         </form>
@@ -35,15 +34,13 @@ import {AuthService} from "../../services/auth.service";
   `
 })
 export class LoginComponent {
-  email = '';
-  password = '';
   error = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onLogin(): void {
+  onLogin(email: string, password: string): void {
     this.error = '';
-    this.authService.login({ email: this.email, password: this.password }).subscribe({
+    this.authService.login({ email, password }).subscribe({
       next: () => this.router.navigate(['/dashboard']),
       error: (err) => this.error = err.error?.message || 'Login failed'
     });

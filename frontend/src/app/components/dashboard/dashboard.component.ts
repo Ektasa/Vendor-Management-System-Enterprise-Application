@@ -1,23 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-// @ts-ignore
+
 import { CommonModule } from '@angular/common';
-// @ts-ignore
-import { Router } from '@angular/router';
+
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { VendorService } from '../../services/vendor.service';
 import { Vendor } from '../../models/vendor.model';
-// @ts-ignore
-import {FormsModule} from "@angular/forms";
 
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, RouterModule],
   template: `
     <div class="navbar">
       <div class="navbar-brand">Vendor Management System</div>
@@ -89,36 +82,35 @@ import {FormsModule} from "@angular/forms";
           <div class="card-header">Create Vendor Profile</div>
           <form (ngSubmit)="createVendor()">
             <div class="form-group">
-              <label>Company Name</label>
-              <input type="text" [(ngModel)]="vendorRequest.companyName" name="companyName" required>
+              <label>Company Name</label>              <input type="text" #vendorRequest.companyName name="companyName" required>
             </div>
             <div class="form-group">
               <label>Contact Person</label>
-              <input type="text" [(ngModel)]="vendorRequest.contactPerson" name="contactPerson" required>
+              <input type="text" #vendorRequest.contactPerson name="contactPerson" required>
             </div>
             <div class="form-group">
               <label>Email</label>
-              <input type="email" [(ngModel)]="vendorRequest.email" name="email" required>
+              <input type="email" #vendorRequest.email name="email" required>
             </div>
             <div class="form-group">
               <label>Phone</label>
-              <input type="text" [(ngModel)]="vendorRequest.phone" name="phone">
+              <input type="text" #vendorRequest.phone name="phone">
             </div>
             <div class="form-group">
               <label>Address</label>
-              <input type="text" [(ngModel)]="vendorRequest.address" name="address">
+              <input type="text" #vendorRequest.address name="address">
             </div>
             <div class="form-group">
               <label>City</label>
-              <input type="text" [(ngModel)]="vendorRequest.city" name="city">
+              <input type="text" #vendorRequest.city name="city">
             </div>
             <div class="form-group">
               <label>Country</label>
-              <input type="text" [(ngModel)]="vendorRequest.country" name="country">
+              <input type="text" #vendorRequest.country name="country">
             </div>
             <div class="form-group">
               <label>Description</label>
-              <textarea [(ngModel)]="vendorRequest.description" name="description" rows="4"></textarea>
+              <textarea #vendorRequest.description name="description" rows="4"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit Profile</button>
           </form>

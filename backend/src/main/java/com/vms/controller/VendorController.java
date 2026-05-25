@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vendors")
+@RequestMapping("/vendors")
 public class VendorController {
     private final VendorService vendorService;
 

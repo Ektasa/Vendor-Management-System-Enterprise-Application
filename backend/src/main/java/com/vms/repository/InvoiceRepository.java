@@ -8,11 +8,11 @@ import java.util.List;
 
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
-   public Invoice findByInvoiceNumber(String invoiceNumber);
-    public Invoice createInvoice(Invoice invoiceData);
-    public List<Invoice> getAllInvoices();
-     public Invoice getInvoiceById(Long id);
-     public void deleteInvoice(Long id);
+//   public Invoice findByInvoiceNumber(String invoiceNumber);
+//    public Invoice createInvoice(Invoice invoiceData);
+//    public List<Invoice> getAllInvoices();
+//     public Invoice getInvoiceById(Long id);
+//     public void deleteInvoice(Long id);
     
 }
     

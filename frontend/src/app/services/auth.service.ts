@@ -7,7 +7,7 @@ import { AuthResponse, LoginRequest, RegisterRequest } from '../models/user.mode
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = 'http://localhost:8080';
   currentUser = signal<AuthResponse | null>(null);
 
   constructor(private http: HttpClient) {
@@ -23,9 +23,11 @@ export class AuthService {
   }
 
   login(request: LoginRequest): Observable<AuthResponse> {
+    console.log('Attempting login with email:', request.email);
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request).pipe(
       tap(response => {
         localStorage.setItem('token', response.token);
+        console.log('Login successful, token stored:', response.token);
         localStorage.setItem('user', JSON.stringify(response));
         this.currentUser.set(response);
       })
@@ -36,6 +38,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, request).pipe(
       tap(response => {
         localStorage.setItem('token', response.token);
+        console.log('Registration successful, token stored:', response.token);
         localStorage.setItem('user', JSON.stringify(response));
         this.currentUser.set(response);
       })
