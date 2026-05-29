@@ -1,3 +1,4 @@
+package com.vms.dto;
 class InvoiceData{
     String invoiceNumber;
     String invoiceDate; 
