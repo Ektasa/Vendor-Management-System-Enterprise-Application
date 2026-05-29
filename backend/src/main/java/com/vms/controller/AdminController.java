@@ -4,6 +4,7 @@ import com.vms.dto.UserDTO;
 import com.vms.entity.User;
 import com.vms.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +37,8 @@ public class AdminController {
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping("/users/{userId}/toggle")
-    public ResponseEntity<String> toggleUserStatus(@PathVariable Long userId) {
+    @PutMapping("/users/{userId}")
+    public ResponseEntity<String> toggleUserStatus(@PathVariable @NonNull Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.setEnabled(!user.isEnabled());
