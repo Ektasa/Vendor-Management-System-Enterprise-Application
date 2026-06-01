@@ -1,6 +1,6 @@
 package com.vms.dto;
 
-import com.vms.entity.Vendor.VendorStatus;
+// import com.vms.entity.Vendor.VendorStatus;
 
 public class VendorRequest {
     private String companyName;
