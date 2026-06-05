@@ -10,28 +10,7 @@ import {AuthService} from "../../services/auth.service";
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  template: `
-    <div class="auth-container">
-      <div class="auth-box">
-        <h2>Vendor Management System</h2>
-        <form (submit)="onLogin(emailInput.value, passwordInput.value)">
-          <div class="form-group">
-            <label>Email</label>
-            <input #emailInput type="email" name="email" required>
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input #passwordInput type="password" name="password" required>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%">Login</button>
-        </form>
-        <p style="text-align: center; margin-top: 16px">
-          Don't have an account? <a routerLink="/register">Register</a>
-        </p>
-        <div *ngIf="error" class="alert alert-error">{{ error }}</div>
-      </div>
-    </div>
-  `
+  templateUrl: './login.component.html'
 })
 export class LoginComponent {
   error = '';
