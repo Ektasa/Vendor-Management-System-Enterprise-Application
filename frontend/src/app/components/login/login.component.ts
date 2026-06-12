@@ -19,9 +19,17 @@ export class LoginComponent {
 
   onLogin(email: string, password: string): void {
     this.error = '';
+    console.log('LoginComponent: submitting login request', { email });
+
     this.authService.login({ email, password }).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
-      error: (err) => this.error = err.error?.message || 'Login failed'
+      next: () => {
+        console.log('LoginComponent: login successful');
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        console.error('LoginComponent: login failed', err);
+        this.error = err.error?.message || err.message || 'Login failed';
+      }
     });
   }
 }
