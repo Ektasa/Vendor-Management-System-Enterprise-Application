@@ -5,6 +5,8 @@ import com.vms.entity.User;
 // import com.vms.entity.User.Role;
 import com.vms.repository.UserRepository;
 import com.vms.security.JwtUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
+    private static final Logger log = LogManager.getLogger(AuthService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -48,6 +51,7 @@ public class AuthService {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
         String token = jwtUtils.generateToken(userDetails);
+        log.info("User {} registered successfully", user.getEmail());
 
         AuthResponse response = new AuthResponse();
         response.setToken(token);
@@ -69,7 +73,7 @@ public class AuthService {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
         String token = jwtUtils.generateToken(userDetails);
-
+       log.info("User {} logged in successfully", user.getEmail());
         AuthResponse response = new AuthResponse();
         response.setToken(token);
         response.setType("Bearer");
