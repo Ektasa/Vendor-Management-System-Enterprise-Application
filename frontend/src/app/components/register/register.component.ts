@@ -21,6 +21,12 @@ export class RegisterComponent {
 
   onRegister(): void {
     this.error = '';
+    console.log('RegisterComponent: submitting register request', {
+      email: this.email,
+      fullName: this.fullName,
+      role: this.role
+    });
+
     this.authService.register({
       email: this.email,
       password: this.password,
@@ -32,8 +38,8 @@ export class RegisterComponent {
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        console.error('Registration failed:', err);
-        this.error = err.error?.message || 'Registration failed';
+        console.error('RegisterComponent: registration failed', err);
+        this.error = err.error?.message || err.message || 'Registration failed';
       }
     });
   }
