@@ -23,24 +23,35 @@ export class AuthService {
   }
 
   login(request: LoginRequest): Observable<AuthResponse> {
-    console.log('Attempting login with email:', request.email);
+    console.log('AuthService: attempting login with email:', request.email);
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request).pipe(
-      tap(response => {
-        localStorage.setItem('token', response.token);
-        console.log('Login successful, token stored:', response.token);
-        localStorage.setItem('user', JSON.stringify(response));
-        this.currentUser.set(response);
+      tap({
+        next: response => {
+          localStorage.setItem('token', response.token);
+          console.log('AuthService: login successful, token stored:', response.token);
+          localStorage.setItem('user', JSON.stringify(response));
+          this.currentUser.set(response);
+        },
+        error: error => {
+          console.error('AuthService: login request failed', error);
+        }
       })
     );
   }
 
   register(request: RegisterRequest): Observable<AuthResponse> {
+    console.log('AuthService: attempting register with email:', request.email);
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, request).pipe(
-      tap(response => {
-        localStorage.setItem('token', response.token);
-        console.log('Registration successful, token stored:', response.token);
-        localStorage.setItem('user', JSON.stringify(response));
-        this.currentUser.set(response);
+      tap({
+        next: response => {
+          localStorage.setItem('token', response.token);
+          console.log('AuthService: registration successful, token stored:', response.token);
+          localStorage.setItem('user', JSON.stringify(response));
+          this.currentUser.set(response);
+        },
+        error: error => {
+          console.error('AuthService: register request failed', error);
+        }
       })
     );
   }
