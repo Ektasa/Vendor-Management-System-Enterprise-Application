@@ -51,7 +51,9 @@ public class AuthService {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
         String token = jwtUtils.generateToken(userDetails);
+        
         log.info("User {} registered successfully", user.getEmail());
+        log.info("Generated token for user {}: {}", user.getEmail(), token);
 
         AuthResponse response = new AuthResponse();
         response.setToken(token);
@@ -74,6 +76,7 @@ public class AuthService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
         String token = jwtUtils.generateToken(userDetails);
        log.info("User {} logged in successfully", user.getEmail());
+        log.info("Generated token for user {}: {}", user.getEmail(), token);
         AuthResponse response = new AuthResponse();
         response.setToken(token);
         response.setType("Bearer");
