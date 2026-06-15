@@ -1,23 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { VendorService } from '../../services/vendor.service';
-import { Vendor } from '../../models/vendor.model';
+import { Vendor, VendorRequest } from '../../models/vendor.model';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './dashboard.component.html'
 })
+// @NgModule({
+//   imports: [CommonModule, FormsModule, RouterModule],
+//   declarations: [DashboardComponent]
+// })
 export class DashboardComponent implements OnInit {
   user = this.authService.currentUser();
   vendors: Vendor[] = [];
   myVendor: Vendor | null = null;
-  vendorRequest = {
+  isEditMode = false;
+  vendorRequest: VendorRequest = {
     companyName: '',
     contactPerson: '',
     email: '',
@@ -52,16 +58,79 @@ export class DashboardComponent implements OnInit {
 
   loadMyProfile(): void {
     this.vendorService.getMyProfile().subscribe({
-      next: (data) => this.myVendor = data,
-      error: () => this.myVendor = null
+      next: (data) => {
+        this.myVendor = data;
+        this.vendorRequest = {
+          companyName: data.companyName,
+          contactPerson: data.contactPerson,
+          email: data.email,
+          phone: data.phone,
+          address: data.address,
+          city: data.city,
+          country: data.country,
+          description: data.description
+        };
+      },
+      error: () => {
+        this.myVendor = null;
+        this.resetVendorRequest();
+      }
     });
   }
 
   createVendor(): void {
     this.vendorService.createVendor(this.vendorRequest).subscribe({
-      next: (data) => this.myVendor = data,
+      next: (data) => {
+        this.myVendor = data;
+        this.isEditMode = false;
+      },
       error: (err) => console.error(err)
     });
+  }
+
+  editProfile(): void {
+    this.isEditMode = true;
+  }
+
+  cancelEdit(): void {
+    this.isEditMode = false;
+    if (this.myVendor) {
+      this.vendorRequest = {
+        companyName: this.myVendor.companyName,
+        contactPerson: this.myVendor.contactPerson,
+        email: this.myVendor.email,
+        phone: this.myVendor.phone,
+        address: this.myVendor.address,
+        city: this.myVendor.city,
+        country: this.myVendor.country,
+        description: this.myVendor.description
+      };
+    } else {
+      this.resetVendorRequest();
+    }
+  }
+
+  updateProfile(): void {
+    this.vendorService.updateMyProfile(this.vendorRequest).subscribe({
+      next: (data) => {
+        this.myVendor = data;
+        this.isEditMode = false;
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  private resetVendorRequest(): void {
+    this.vendorRequest = {
+      companyName: '',
+      contactPerson: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      country: '',
+      description: ''
+    };
   }
 
   updateStatus(vendorId: number, status: string): void {
@@ -88,3 +157,12 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 }
+
+// function NgModule(arg0: { imports: any[]; declarations: (typeof DashboardComponent)[]; }): (target: typeof DashboardComponent) => void | typeof DashboardComponent {
+//   throw new Error('Function not implemented.');
+// }
+
+
+// function NgModule(arg0: { imports: any[]; declarations: (typeof DashboardComponent)[]; }): (target: typeof DashboardComponent) => void | typeof DashboardComponent {
+//   throw new Error('Function not implemented.');
+// }
