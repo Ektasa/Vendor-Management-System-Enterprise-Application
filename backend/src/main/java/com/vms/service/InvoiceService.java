@@ -5,6 +5,7 @@ import com.vms.repository.InvoiceRepository;
 
 import jakarta.validation.constraints.NotNull;
 
+import org.springframework.lang.NonNull;
 // import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,11 @@ public class InvoiceService {
         this.invoiceRepository = invoiceRepository;
     }
 
-    public Invoice createInvoice(@NotNull Invoice invoiceData) {
+    public Invoice createInvoice(@NotNull @NonNull Invoice invoiceData) {
         return invoiceRepository.save(invoiceData);
     }
 
-    public Invoice getInvoiceById(@NotNull Long id) {
+    public Invoice getInvoiceById(@NotNull @NonNull Long id) {
         return invoiceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Invoice not found"));
     }
@@ -31,7 +32,7 @@ public class InvoiceService {
         return invoiceRepository.findAll();
     }
 
-    public void deleteInvoice(@NotNull Long id) {
+    public void deleteInvoice(@NotNull @NonNull Long id) {
         if (!invoiceRepository.existsById(id)) {
             throw new RuntimeException("Invoice not found");
         }
