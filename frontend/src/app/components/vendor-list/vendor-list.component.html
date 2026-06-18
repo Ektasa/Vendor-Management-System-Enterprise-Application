@@ -1,0 +1,92 @@
+<div class="vendor-list-container">
+  <div class="vendor-list-header">
+    <h1>All Vendors</h1>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-value">{{ vendors.length }}</span>
+        <span class="stat-label">Total Vendors</span>
+      </div>
+      <div class="stat pending">
+        <span class="stat-value">{{ getPendingCount() }}</span>
+        <span class="stat-label">Pending</span>
+      </div>
+      <div class="stat approved">
+        <span class="stat-value">{{ getApprovedCount() }}</span>
+        <span class="stat-label">Approved</span>
+      </div>
+      <div class="stat rejected">
+        <span class="stat-value">{{ getRejectedCount() }}</span>
+        <span class="stat-label">Rejected</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div class="filters">
+    <div class="filter-group">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        placeholder="Search by company name, email, or contact person..."
+        class="search-input"
+      />
+    </div>
+    <div class="filter-group">
+      <select [(ngModel)]="statusFilter" (change)="onStatusFilterChange()" class="status-filter">
+        <option value="">All Statuses</option>
+        <option value="PENDING">Pending</option>
+        <option value="APPROVED">Approved</option>
+        <option value="REJECTED">Rejected</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">Loading vendors...</div>
+
+  <div *ngIf="!isLoading && filteredVendors.length === 0" class="no-data">
+    No vendors found
+  </div>
+
+  <div *ngIf="!isLoading && filteredVendors.length > 0" class="vendors-table-wrapper">
+    <table class="vendors-table">
+      <thead>
+        <tr>
+          <th>Company Name</th>
+          <th>Contact Person</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>City</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vendor of filteredVendors" class="vendor-row">
+          <td class="company-name">{{ vendor.companyName }}</td>
+          <td>{{ vendor.contactPerson }}</td>
+          <td class="email">{{ vendor.email }}</td>
+          <td>{{ vendor.phone }}</td>
+          <td>{{ vendor.city }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusColor(vendor.status)">
+              {{ vendor.status }}
+            </span>
+          </td>
+          <td class="actions">
+            <select #statusSelect
+              (change)="updateStatus(vendor.id, statusSelect.value)"
+              class="status-action-select"
+            >
+              <option value="">Update Status</option>
+              <option value="PENDING">Pending</option>
+              <option value="APPROVED">Approve</option>
+              <option value="REJECTED">Reject</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

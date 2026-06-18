@@ -1,0 +1,87 @@
+<div class="onboarding-container">
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to Vendor Management System</h1>
+      <p>Streamline your vendor management and procurement processes</p>
+      <div class="hero-buttons">
+        <button *ngIf="!isLoggedIn" (click)="navigateToLogin()" class="btn-primary">Login</button>
+        <button *ngIf="!isLoggedIn" (click)="navigateToDashboard()" class="btn-secondary">Register as Vendor</button>
+        <button *ngIf="isLoggedIn" (click)="navigateToDashboard()" class="btn-primary">Go to Dashboard</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="features-container">
+      <h2>Key Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3>Easy Registration</h3>
+          <p>Register your vendor profile in minutes with all necessary details</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <h3>Vendor Verification</h3>
+          <p>Streamlined approval process for vendor onboarding</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Dashboard</h3>
+          <p>Track your vendor status and manage your profile</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3>Secure & Safe</h3>
+          <p>Enterprise-grade security for your data</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <div class="how-container">
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Register</h3>
+          <p>Create your account and register as a vendor</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Complete Profile</h3>
+          <p>Fill in your company details and information</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Get Approved</h3>
+          <p>Wait for admin verification and approval</p>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Start Business</h3>
+          <p>Begin your business with us</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-content">
+      <h2 *ngIf="!isLoggedIn">Ready to Join?</h2>
+      <h2 *ngIf="isLoggedIn">Welcome, {{ user?.fullName }}!</h2>
+      <p *ngIf="!isLoggedIn">Become a trusted vendor and grow your business with us</p>
+      <p *ngIf="isLoggedIn">Access your dashboard to manage your vendor profile</p>
+      <button *ngIf="!isLoggedIn" (click)="navigateToDashboard()" class="btn-large">Get Started Now</button>
+      <button *ngIf="isLoggedIn" (click)="navigateToDashboard()" class="btn-large">Go to Dashboard</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2026 Vendor Management System. All rights reserved.</p>
+  </footer>
+</div>

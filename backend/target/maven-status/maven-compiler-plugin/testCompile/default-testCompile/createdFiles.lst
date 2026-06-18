@@ -1,0 +1,3 @@
+com\vms\service\AuthServiceTest.class
+com\vms\security\JwtUtilsTest.class
+com\vms\security\CustomUserDetailsServiceTest.class

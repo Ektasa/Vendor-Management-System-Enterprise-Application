@@ -1,0 +1,39 @@
+<header class="header">
+  <div class="header-container">
+    <div class="logo">
+      <h1>VMS</h1>
+    </div>
+
+    <nav class="nav-desktop">
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/onboarding" routerLinkActive="active">Vendor Onboarding</a>
+      <a *ngIf="isLoggedIn" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a *ngIf="isAdmin() || isManager()" routerLink="/vendors" routerLinkActive="active">Vendor List</a>
+      <div *ngIf="!isLoggedIn" class="auth-links">
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+        <a routerLink="/register" routerLinkActive="active">Register</a>
+      </div>
+      <div *ngIf="isLoggedIn" class="user-menu">
+        <span class="user-name">{{ user?.fullName }}</span>
+        <button (click)="logout()" class="btn-logout">Logout</button>
+      </div>
+    </nav>
+
+    <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+  </div>
+
+  <nav class="nav-mobile" *ngIf="menuOpen">
+    <a routerLink="/home" (click)="closeMenu()" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+    <a routerLink="/onboarding" (click)="closeMenu()" routerLinkActive="active">Vendor Onboarding</a>
+    <a *ngIf="isLoggedIn" routerLink="/dashboard" (click)="closeMenu()" routerLinkActive="active">Dashboard</a>
+    <a *ngIf="isAdmin() || isManager()" routerLink="/vendors" (click)="closeMenu()" routerLinkActive="active">Vendor List</a>
+    <div *ngIf="!isLoggedIn" class="auth-links-mobile">
+      <a routerLink="/login" (click)="closeMenu()" routerLinkActive="active">Login</a>
+      <a routerLink="/register" (click)="closeMenu()" routerLinkActive="active">Register</a>
+    </div>
+    <div *ngIf="isLoggedIn" class="user-menu-mobile">
+      <span class="user-name">{{ user?.fullName }} ({{ user?.role }})</span>
+      <button (click)="logout()" class="btn-logout">Logout</button>
+    </div>
+  </nav>
+</header>

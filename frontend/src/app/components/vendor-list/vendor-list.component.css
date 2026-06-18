@@ -1,0 +1,222 @@
+.vendor-list-container {
+  padding: 30px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 100px);
+}
+
+.vendor-list-header {
+  margin-bottom: 40px;
+}
+
+.vendor-list-header h1 {
+  margin: 0 0 30px 0;
+  color: #333;
+  font-size: 32px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.stat {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-left: 4px solid #1976d2;
+}
+
+.stat.pending {
+  border-left-color: #ff9800;
+}
+
+.stat.approved {
+  border-left-color: #4caf50;
+}
+
+.stat.rejected {
+  border-left-color: #f44336;
+}
+
+.stat-value {
+  display: block;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 14px;
+  color: #666;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #d32f2f;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 15px;
+  margin-bottom: 30px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-group {
+  display: flex;
+}
+
+.search-input,
+.status-filter {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.search-input:focus,
+.status-filter:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.loading,
+.no-data {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: white;
+  border-radius: 8px;
+  color: #666;
+  font-size: 16px;
+}
+
+.vendors-table-wrapper {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+.vendors-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vendors-table thead {
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #ddd;
+}
+
+.vendors-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+}
+
+.vendors-table td {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.vendor-row:hover {
+  background-color: #fafafa;
+}
+
+.company-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.email {
+  color: #666;
+  font-size: 14px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background-color: #fff3e0;
+  color: #ff9800;
+}
+
+.status-approved {
+  background-color: #e8f5e9;
+  color: #4caf50;
+}
+
+.status-rejected {
+  background-color: #ffebee;
+  color: #f44336;
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+.status-action-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.status-action-select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+@media (max-width: 768px) {
+  .vendor-list-container {
+    padding: 20px 10px;
+  }
+
+  .vendor-list-header h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .vendors-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .vendors-table th,
+  .vendors-table td {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
