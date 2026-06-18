@@ -7,6 +7,8 @@ import com.vms.entity.Vendor;
 import com.vms.entity.Vendor.VendorStatus;
 import com.vms.repository.UserRepository;
 import com.vms.repository.VendorRepository;
+
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +28,7 @@ public class VendorService {
 
     @Transactional
     @PreAuthorize("hasRole('VENDOR')")
-    public VendorDTO createVendor(VendorRequest request, Long userId) {
+    public VendorDTO createVendor(VendorRequest request, @NonNull Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -52,7 +54,7 @@ public class VendorService {
 
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public VendorDTO updateVendorStatus(Long vendorId, VendorStatus status) {
+    public VendorDTO updateVendorStatus(@NonNull Long vendorId, VendorStatus status) {
         Vendor vendor = vendorRepository.findById(vendorId)
                 .orElseThrow(() -> new RuntimeException("Vendor not found"));
 
