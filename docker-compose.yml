@@ -5,8 +5,8 @@ services:
     image: mysql:8.0
     container_name: vms-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: vms_db
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: vms_db_01
     ports:
       - "3306:3306"
     volumes:
@@ -25,7 +25,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vms_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_PASSWORD: 1234
     ports:
       - "8080:8080"
     depends_on:
