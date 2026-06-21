@@ -39,6 +39,7 @@
         <option value="PENDING">Pending</option>
         <option value="APPROVED">Approved</option>
         <option value="REJECTED">Rejected</option>
+        <option value="SUSPENDED">Suspended</option>
       </select>
     </div>
   </div>
@@ -75,14 +76,16 @@
             </span>
           </td>
           <td class="actions">
-            <select #statusSelect
-              (change)="updateStatus(vendor.id, statusSelect.value)"
-              class="status-action-select"
-            >
+            <select #newStatusSelect
+              
+                  (change)="updateStatus(vendor.id, $any($event.target).value)"
+              class="status-action-select">
+
               <option value="">Update Status</option>
               <option value="PENDING">Pending</option>
               <option value="APPROVED">Approve</option>
               <option value="REJECTED">Reject</option>
+              <option value="SUSPENDED">Suspend</option>
             </select>
           </td>
         </tr>

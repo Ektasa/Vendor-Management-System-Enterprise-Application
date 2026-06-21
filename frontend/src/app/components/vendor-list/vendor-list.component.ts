@@ -73,7 +73,7 @@ export class VendorListComponent implements OnInit {
     this.applyFilters();
   }
 
-  updateStatus(vendorId: number, newStatus: string): void {
+  updateStatus(vendorId: number, newStatus: 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED'): void {
     if (!newStatus) return;
 
     this.vendorService.updateVendorStatus(vendorId, newStatus).subscribe({
