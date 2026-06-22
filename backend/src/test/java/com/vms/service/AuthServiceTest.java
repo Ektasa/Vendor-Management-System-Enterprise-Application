@@ -6,11 +6,15 @@ import com.vms.dto.RegisterRequest;
 import com.vms.entity.User;
 import com.vms.repository.UserRepository;
 import com.vms.security.JwtUtils;
+
+import software.amazon.awssdk.services.s3.S3Client;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -151,4 +155,16 @@ class AuthServiceTest {
 
         assertEquals("User not found", exception.getMessage());
     }
+
+    @Autowired
+private S3Client s3Client;
+
+
+public void test(){
+
+    s3Client.listBuckets()
+            .buckets()
+            .forEach(System.out::println);
+
+}
 }
