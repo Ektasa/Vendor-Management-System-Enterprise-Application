@@ -6,9 +6,13 @@ spring:
     name: vendor-management-system
   
   datasource:
-    url: jdbc:mysql://localhost:3306/vms_db_01
-    username: root
-    password: 1234
+    # url: jdbc:mysql://localhost:3306/vms_db_01
+    # username: root
+    # password: 1234
+    
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/vms_db_01}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:1234}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 20
@@ -34,3 +38,11 @@ logging:
   level:
     com.vms: DEBUG
     org.springframework.security: DEBUG
+
+
+aws:
+  endpoint: http://localstack:4566
+  region: us-east-1
+  access-key: test
+  secret-key: test
+  
