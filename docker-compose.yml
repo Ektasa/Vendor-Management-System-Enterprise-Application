@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   localstack:
-      image: localstack/localstack
+      image: localstack/localstack:2.3.2
       container_name: localstack
       ports:
         - "4566:4566"
@@ -36,8 +36,7 @@ services:
       dockerfile: Dockerfile
     container_name: vms-backend
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vms_db_01?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vms_db_01
       SPRING_DATASOURCE_PASSWORD: 1234
     ports:
       - "8080:8080"
