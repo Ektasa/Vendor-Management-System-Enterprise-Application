@@ -20,6 +20,14 @@ spring:
       connection-timeout: 30000
       idle-timeout: 600000
       max-lifetime: 1800000
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: invoice-service-group
+      auto-offset-reset: earliest
+
+invoice:
+  topic: invoice-submitted
   
   jpa:
     hibernate:

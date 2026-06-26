@@ -1,41 +1,148 @@
 package com.vms.service;
 
+import com.vms.dto.InvoiceRequest;
+import com.vms.dto.InvoiceSummaryDTO;
 import com.vms.entity.Invoice;
+import com.vms.entity.Invoice.InvoiceStatus;
+import com.vms.entity.User;
+import com.vms.kafka.InvoiceEvent;
 import com.vms.repository.InvoiceRepository;
-
-import jakarta.validation.constraints.NotNull;
-
+import com.vms.repository.UserRepository;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.lang.NonNull;
-// import org.springframework.lang.NonNull;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
+    private final UserRepository userRepository;
+    private final KafkaTemplate<String, InvoiceEvent> kafkaTemplate;
+    private final String invoiceTopic = "invoice-submitted";
 
-    public InvoiceService(InvoiceRepository invoiceRepository) {
+    public InvoiceService(InvoiceRepository invoiceRepository,
+                          UserRepository userRepository,
+                          KafkaTemplate<String, InvoiceEvent> kafkaTemplate) {
         this.invoiceRepository = invoiceRepository;
+        this.userRepository = userRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
-    public Invoice createInvoice(@NotNull @NonNull Invoice invoiceData) {
-        return invoiceRepository.save(invoiceData);
+    public Invoice createInvoice(@NonNull InvoiceRequest invoiceData, @NonNull UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getRole() != User.Role.VENDOR) {
+            throw new RuntimeException("Only vendor users can submit invoices");
+        }
+
+        Invoice invoice = new Invoice();
+        invoice.setInvoiceNumber(invoiceData.getInvoiceNumber());
+        invoice.setInvoiceDate(invoiceData.getInvoiceDate() != null && !invoiceData.getInvoiceDate().isBlank()
+                ? LocalDate.parse(invoiceData.getInvoiceDate())
+                : LocalDate.now());
+        invoice.setCustomerName(invoiceData.getCustomerName());
+        invoice.setCustomerAddress(invoiceData.getCustomerAddress());
+        invoice.setCustomerEmail(invoiceData.getCustomerEmail());
+        invoice.setCustomerPhone(invoiceData.getCustomerPhone());
+        invoice.setItemDescription(invoiceData.getItemDescription());
+        invoice.setQuantity(invoiceData.getQuantity());
+        invoice.setUnitPrice(invoiceData.getUnitPrice());
+        invoice.setTotalAmount(invoiceData.getTotalAmount());
+        invoice.setStatus(InvoiceStatus.PENDING);
+        invoice.setVendorUserId(user.getId());
+        invoice.setVendorName(user.getFullName());
+        invoice.setVendorEmail(user.getEmail());
+        invoice.setSubmittedAt(LocalDateTime.now());
+        invoice.setCreatedAt(LocalDateTime.now());
+
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+        publishInvoiceEvent(savedInvoice);
+        return savedInvoice;
     }
 
-    public Invoice getInvoiceById(@NotNull @NonNull Long id) {
-        return invoiceRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Invoice not found"));
-    }
+    public List<Invoice> getInvoicesForCurrentUser(@NonNull UserDetails userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    public List<Invoice> getAllInvoices() {
+        if (user.getRole() == User.Role.VENDOR) {
+            return invoiceRepository.findByVendorUserId(user.getId());
+        }
         return invoiceRepository.findAll();
     }
 
-    public void deleteInvoice(@NotNull @NonNull Long id) {
-        if (!invoiceRepository.existsById(id)) {
-            throw new RuntimeException("Invoice not found");
+    public Invoice getInvoiceById(@NonNull Long id, @NonNull UserDetails userDetails) {
+        Invoice invoice = invoiceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Invoice not found"));
+
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getRole() == User.Role.VENDOR && !invoice.getVendorUserId().equals(user.getId())) {
+            throw new RuntimeException("Access denied");
         }
-        invoiceRepository.deleteById(id);
+
+        return invoice;
+    }
+
+    public Invoice updateInvoiceStatus(@NonNull Long invoiceId, @NonNull InvoiceStatus status) {
+        Invoice invoice = invoiceRepository.findById(invoiceId)
+                .orElseThrow(() -> new RuntimeException("Invoice not found"));
+
+        invoice.setStatus(status);
+        Invoice updatedInvoice = invoiceRepository.save(invoice);
+        publishInvoiceEvent(updatedInvoice);
+        return updatedInvoice;
+    }
+
+    public List<InvoiceSummaryDTO> getInvoiceSummary() {
+        List<Invoice> invoices = invoiceRepository.findAll();
+
+        Map<Long, List<Invoice>> groupedByVendor = invoices.stream()
+                .collect(Collectors.groupingBy(Invoice::getVendorUserId));
+
+        return groupedByVendor.entrySet().stream()
+                .map(entry -> {
+                    List<Invoice> vendorInvoices = entry.getValue();
+                    InvoiceSummaryDTO summary = new InvoiceSummaryDTO();
+                    summary.setVendorUserId(entry.getKey());
+                    summary.setVendorFullName(vendorInvoices.get(0).getVendorName());
+                    summary.setVendorEmail(vendorInvoices.get(0).getVendorEmail());
+                    summary.setInvoiceCount(vendorInvoices.size());
+                    summary.setTotalAmount(vendorInvoices.stream().mapToDouble(Invoice::getTotalAmount).sum());
+                    summary.setPendingCount((int) vendorInvoices.stream().filter(i -> i.getStatus() == InvoiceStatus.PENDING).count());
+                    summary.setApprovedCount((int) vendorInvoices.stream().filter(i -> i.getStatus() == InvoiceStatus.APPROVED).count());
+                    summary.setRejectedCount((int) vendorInvoices.stream().filter(i -> i.getStatus() == InvoiceStatus.REJECTED).count());
+                    return summary;
+                })
+                .collect(Collectors.toList());
+    }
+
+    private void publishInvoiceEvent(@NonNull Invoice invoice) {
+        InvoiceEvent event = new InvoiceEvent();
+        event.setInvoiceId(invoice.getId());
+        event.setInvoiceNumber(invoice.getInvoiceNumber());
+        event.setInvoiceDate(invoice.getInvoiceDate().toString());
+        event.setCustomerName(invoice.getCustomerName());
+        event.setCustomerAddress(invoice.getCustomerAddress());
+        event.setCustomerEmail(invoice.getCustomerEmail());
+        event.setCustomerPhone(invoice.getCustomerPhone());
+        event.setItemDescription(invoice.getItemDescription());
+        event.setQuantity(invoice.getQuantity());
+        event.setUnitPrice(invoice.getUnitPrice());
+        event.setTotalAmount(invoice.getTotalAmount());
+        event.setVendorUserId(invoice.getVendorUserId());
+        event.setVendorName(invoice.getVendorName());
+        event.setVendorEmail(invoice.getVendorEmail());
+        event.setStatus(invoice.getStatus().name());
+        event.setSubmittedAt(invoice.getSubmittedAt());
+
+        kafkaTemplate.send(invoiceTopic, Long.toString(invoice.getId()), event);
     }
 }
