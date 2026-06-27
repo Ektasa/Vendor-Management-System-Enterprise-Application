@@ -4,6 +4,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { VendorListComponent } from './components/vendor-list/vendor-list.component';
+import { InvoiceComponent } from './components/invoice/invoice.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'vendors', component: VendorListComponent, canActivate: [authGuard] },
+  { path: 'invoices', component: InvoiceComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '/home' }
 ];
