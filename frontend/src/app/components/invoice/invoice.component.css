@@ -1,0 +1,98 @@
+.invoice-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.invoice-form,
+.invoice-table {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.invoice-form .form-group {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.invoice-form label {
+  font-weight: 600;
+}
+
+.invoice-form input,
+.invoice-form textarea,
+.invoice-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+}
+
+.invoice-form button {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.invoice-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.invoice-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-table th,
+.invoice-table td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.invoice-table th {
+  font-weight: 700;
+}
+
+.status-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.status-pending { background: #fff4e5; color: #a15900; }
+.status-approved { background: #e6f4ea; color: #1f6c34; }
+.status-rejected { background: #fdecea; color: #981b1e; }
+
+.action-buttons button {
+  margin-right: 8px;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.action-buttons button.approve { background: #1e8e3e; color: white; }
+.action-buttons button.reject { background: #c62828; color: white; }
+.action-buttons button.pending { background: #1976d2; color: white; }
+
+.error-message {
+  color: #c62828;
+  margin-bottom: 16px;
+}
