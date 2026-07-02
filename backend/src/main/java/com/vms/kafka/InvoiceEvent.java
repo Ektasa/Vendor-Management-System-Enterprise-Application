@@ -1,11 +1,12 @@
 package com.vms.kafka;
 
-import java.time.LocalDateTime;
-
 public class InvoiceEvent {
     private Long invoiceId;
     private String invoiceNumber;
     private String invoiceDate;
+    private String productName;
+    private String companyName;
+    private String location;
     private String customerName;
     private String customerAddress;
     private String customerEmail;
@@ -14,11 +15,13 @@ public class InvoiceEvent {
     private int quantity;
     private double unitPrice;
     private double totalAmount;
+    private double gstAmount;
+    private String supportingDocumentName;
     private Long vendorUserId;
     private String vendorName;
     private String vendorEmail;
     private String status;
-    private LocalDateTime submittedAt;
+    private String submittedAt;
 
     public InvoiceEvent() {
     }
@@ -45,6 +48,30 @@ public class InvoiceEvent {
 
     public void setInvoiceDate(String invoiceDate) {
         this.invoiceDate = invoiceDate;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getCustomerName() {
@@ -111,6 +138,22 @@ public class InvoiceEvent {
         this.totalAmount = totalAmount;
     }
 
+    public double getGstAmount() {
+        return gstAmount;
+    }
+
+    public void setGstAmount(double gstAmount) {
+        this.gstAmount = gstAmount;
+    }
+
+    public String getSupportingDocumentName() {
+        return supportingDocumentName;
+    }
+
+    public void setSupportingDocumentName(String supportingDocumentName) {
+        this.supportingDocumentName = supportingDocumentName;
+    }
+
     public Long getVendorUserId() {
         return vendorUserId;
     }
@@ -143,11 +186,11 @@ public class InvoiceEvent {
         this.status = status;
     }
 
-    public LocalDateTime getSubmittedAt() {
+    public String getSubmittedAt() {
         return submittedAt;
     }
 
-    public void setSubmittedAt(LocalDateTime submittedAt) {
+    public void setSubmittedAt(String submittedAt) {
         this.submittedAt = submittedAt;
     }
 }
