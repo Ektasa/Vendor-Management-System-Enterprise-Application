@@ -3,6 +3,9 @@ package com.vms.dto;
 public class InvoiceRequest {
     private String invoiceNumber;
     private String invoiceDate;
+    private String productName;
+    private String companyName;
+    private String location;
     private String customerName;
     private String customerAddress;
     private String customerEmail;
@@ -11,6 +14,8 @@ public class InvoiceRequest {
     private int quantity;
     private double unitPrice;
     private double totalAmount;
+    private double gstAmount;
+    private String supportingDocumentName;
 
     public InvoiceRequest() {
     }
@@ -29,6 +34,30 @@ public class InvoiceRequest {
 
     public void setInvoiceDate(String invoiceDate) {
         this.invoiceDate = invoiceDate;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getCustomerName() {
@@ -93,5 +122,21 @@ public class InvoiceRequest {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public double getGstAmount() {
+        return gstAmount;
+    }
+
+    public void setGstAmount(double gstAmount) {
+        this.gstAmount = gstAmount;
+    }
+
+    public String getSupportingDocumentName() {
+        return supportingDocumentName;
+    }
+
+    public void setSupportingDocumentName(String supportingDocumentName) {
+        this.supportingDocumentName = supportingDocumentName;
     }
 }
