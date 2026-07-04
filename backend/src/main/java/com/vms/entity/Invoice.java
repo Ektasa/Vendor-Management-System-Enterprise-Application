@@ -1,4 +1,4 @@
-﻿package com.vms.entity;
+package com.vms.entity;
 
 import jakarta.persistence.*;
 
@@ -11,11 +11,20 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "invoice_number", nullable = false, unique = true)
+        @Column(name = "invoice_number", nullable = false, unique = true)
     private String invoiceNumber;
 
     @Column(name = "invoice_date", nullable = false)
     private LocalDate invoiceDate;
+
+    @Column(name = "product_name")
+    private String productName;
+
+    @Column(name = "company_name")
+    private String companyName;
+
+    @Column(name = "location")
+    private String location;
 
     @Column(name = "customer_name", nullable = false)
     private String customerName;
@@ -40,6 +49,12 @@ public class Invoice {
 
     @Column(name = "total_amount", nullable = false)
     private double totalAmount;
+
+    @Column(name = "gst_amount")
+    private double gstAmount;
+
+    @Column(name = "supporting_document_name")
+    private String supportingDocumentName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -105,6 +120,30 @@ public class Invoice {
         this.invoiceDate = invoiceDate;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getCustomerName() {
         return customerName;
     }
@@ -167,6 +206,22 @@ public class Invoice {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public double getGstAmount() {
+        return gstAmount;
+    }
+
+    public void setGstAmount(double gstAmount) {
+        this.gstAmount = gstAmount;
+    }
+
+    public String getSupportingDocumentName() {
+        return supportingDocumentName;
+    }
+
+    public void setSupportingDocumentName(String supportingDocumentName) {
+        this.supportingDocumentName = supportingDocumentName;
     }
 
     public InvoiceStatus getStatus() {
