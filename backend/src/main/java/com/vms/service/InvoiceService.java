@@ -47,6 +47,9 @@ public class InvoiceService {
         invoice.setInvoiceDate(invoiceData.getInvoiceDate() != null && !invoiceData.getInvoiceDate().isBlank()
                 ? LocalDate.parse(invoiceData.getInvoiceDate())
                 : LocalDate.now());
+        invoice.setProductName(invoiceData.getProductName());
+        invoice.setCompanyName(invoiceData.getCompanyName());
+        invoice.setLocation(invoiceData.getLocation());
         invoice.setCustomerName(invoiceData.getCustomerName());
         invoice.setCustomerAddress(invoiceData.getCustomerAddress());
         invoice.setCustomerEmail(invoiceData.getCustomerEmail());
@@ -55,6 +58,8 @@ public class InvoiceService {
         invoice.setQuantity(invoiceData.getQuantity());
         invoice.setUnitPrice(invoiceData.getUnitPrice());
         invoice.setTotalAmount(invoiceData.getTotalAmount());
+        invoice.setGstAmount(invoiceData.getGstAmount());
+        invoice.setSupportingDocumentName(invoiceData.getSupportingDocumentName());
         invoice.setStatus(InvoiceStatus.PENDING);
         invoice.setVendorUserId(user.getId());
         invoice.setVendorName(user.getFullName());
@@ -62,9 +67,8 @@ public class InvoiceService {
         invoice.setSubmittedAt(LocalDateTime.now());
         invoice.setCreatedAt(LocalDateTime.now());
 
-        Invoice savedInvoice = invoiceRepository.save(invoice);
-        publishInvoiceEvent(savedInvoice);
-        return savedInvoice;
+        publishInvoiceEvent(invoice);
+        return invoice;
     }
 
     public List<Invoice> getInvoicesForCurrentUser(@NonNull UserDetails userDetails) {
@@ -94,11 +98,12 @@ public class InvoiceService {
     public Invoice updateInvoiceStatus(@NonNull Long invoiceId, @NonNull InvoiceStatus status) {
         Invoice invoice = invoiceRepository.findById(invoiceId)
                 .orElseThrow(() -> new RuntimeException("Invoice not found"));
-
         invoice.setStatus(status);
-        Invoice updatedInvoice = invoiceRepository.save(invoice);
-        publishInvoiceEvent(updatedInvoice);
-        return updatedInvoice;
+        invoice.setSubmittedAt(invoice.getSubmittedAt() != null ? invoice.getSubmittedAt() : LocalDateTime.now());
+        invoice.setCreatedAt(invoice.getCreatedAt() != null ? invoice.getCreatedAt() : LocalDateTime.now());
+        invoiceRepository.save(invoice);
+        publishInvoiceEvent(invoice);
+        return invoice;
     }
 
     public List<InvoiceSummaryDTO> getInvoiceSummary() {
@@ -128,7 +133,10 @@ public class InvoiceService {
         InvoiceEvent event = new InvoiceEvent();
         event.setInvoiceId(invoice.getId());
         event.setInvoiceNumber(invoice.getInvoiceNumber());
-        event.setInvoiceDate(invoice.getInvoiceDate().toString());
+        event.setInvoiceDate(invoice.getInvoiceDate() != null ? invoice.getInvoiceDate().toString() : null);
+        event.setProductName(invoice.getProductName());
+        event.setCompanyName(invoice.getCompanyName());
+        event.setLocation(invoice.getLocation());
         event.setCustomerName(invoice.getCustomerName());
         event.setCustomerAddress(invoice.getCustomerAddress());
         event.setCustomerEmail(invoice.getCustomerEmail());
@@ -137,11 +145,13 @@ public class InvoiceService {
         event.setQuantity(invoice.getQuantity());
         event.setUnitPrice(invoice.getUnitPrice());
         event.setTotalAmount(invoice.getTotalAmount());
+        event.setGstAmount(invoice.getGstAmount());
+        event.setSupportingDocumentName(invoice.getSupportingDocumentName());
         event.setVendorUserId(invoice.getVendorUserId());
         event.setVendorName(invoice.getVendorName());
         event.setVendorEmail(invoice.getVendorEmail());
         event.setStatus(invoice.getStatus().name());
-        event.setSubmittedAt(invoice.getSubmittedAt());
+        event.setSubmittedAt(invoice.getSubmittedAt() != null ? invoice.getSubmittedAt().toString() : null);
 
         kafkaTemplate.send(invoiceTopic, Long.toString(invoice.getId()), event);
     }
