@@ -7,23 +7,27 @@ import { Invoice, InvoiceRequest } from '../models/invoice.model';
   providedIn: 'root'
 })
 export class InvoiceService {
-  private apiUrl = 'http://localhost:8090/invoices';
+  private publisherUrl = 'http://localhost:8080/invoices';
+  private microserviceUrl = 'http://localhost:8081/invoices';
 
   constructor(private http: HttpClient) {}
 
-  getInvoices(): Observable<Invoice[]> {
-    return this.http.get<Invoice[]>(this.apiUrl);
+  getInvoices(userId?: number, role?: string): Observable<Invoice[]> {
+    if (role === 'VENDOR' && userId) {
+      return this.http.get<Invoice[]>(`${this.microserviceUrl}/vendor/${userId}`);
+    }
+    return this.http.get<Invoice[]>(this.microserviceUrl);
   }
 
   getInvoiceById(id: number): Observable<Invoice> {
-    return this.http.get<Invoice>(`${this.apiUrl}/${id}`);
+    return this.http.get<Invoice>(`${this.microserviceUrl}/${id}`);
   }
 
   createInvoice(request: InvoiceRequest): Observable<Invoice> {
-    return this.http.post<Invoice>(this.apiUrl, request);
+    return this.http.post<Invoice>(this.publisherUrl, request);
   }
 
   updateInvoiceStatus(invoiceId: number, status: 'PENDING' | 'APPROVED' | 'REJECTED') {
-    return this.http.put<Invoice>(`${this.apiUrl}/${invoiceId}/status?status=${status}`, {});
+    return this.http.put<Invoice>(`${this.publisherUrl}/${invoiceId}/status?status=${status}`, {});
   }
 }

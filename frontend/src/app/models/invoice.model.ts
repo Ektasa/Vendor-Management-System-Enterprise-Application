@@ -2,6 +2,9 @@ export interface Invoice {
   id: number;
   invoiceNumber: string;
   invoiceDate: string;
+  productName: string;
+  companyName: string;
+  location: string;
   customerName: string;
   customerAddress: string;
   customerEmail: string;
@@ -10,6 +13,8 @@ export interface Invoice {
   quantity: number;
   unitPrice: number;
   totalAmount: number;
+  gstAmount: number;
+  supportingDocumentName: string;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   vendorUserId: number;
   vendorName: string;
@@ -21,6 +26,9 @@ export interface Invoice {
 export interface InvoiceRequest {
   invoiceNumber: string;
   invoiceDate: string;
+  productName: string;
+  companyName: string;
+  location: string;
   customerName: string;
   customerAddress: string;
   customerEmail: string;
@@ -29,4 +37,6 @@ export interface InvoiceRequest {
   quantity: number;
   unitPrice: number;
   totalAmount: number;
+  gstAmount: number;
+  supportingDocumentName: string;
 }
