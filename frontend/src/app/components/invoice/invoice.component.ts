@@ -19,6 +19,9 @@ export class InvoiceComponent implements OnInit {
   invoiceRequest: InvoiceRequest = {
     invoiceNumber: '',
     invoiceDate: '',
+    productName: '',
+    companyName: '',
+    location: '',
     customerName: '',
     customerAddress: '',
     customerEmail: '',
@@ -26,8 +29,11 @@ export class InvoiceComponent implements OnInit {
     itemDescription: '',
     quantity: 1,
     unitPrice: 0,
-    totalAmount: 0
+    totalAmount: 0,
+    gstAmount: 0,
+    supportingDocumentName: ''
   };
+  selectedFileName = '';
   isSubmitting = false;
   error = '';
 
@@ -50,7 +56,9 @@ export class InvoiceComponent implements OnInit {
   }
 
   loadInvoices(): void {
-    this.invoiceService.getInvoices().subscribe({
+    const userId = this.user?.id;
+    const role = this.user?.role;
+    this.invoiceService.getInvoices(userId, role).subscribe({
       next: (data) => {
         this.invoices = data;
       },
@@ -65,6 +73,15 @@ export class InvoiceComponent implements OnInit {
     this.invoiceRequest.totalAmount = this.invoiceRequest.quantity * this.invoiceRequest.unitPrice;
   }
 
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) {
+      this.selectedFileName = file.name;
+      this.invoiceRequest.supportingDocumentName = file.name;
+    }
+  }
+
   submitInvoice(): void {
     this.error = '';
     this.isSubmitting = true;
@@ -75,6 +92,9 @@ export class InvoiceComponent implements OnInit {
         this.invoiceRequest = {
           invoiceNumber: '',
           invoiceDate: '',
+          productName: '',
+          companyName: '',
+          location: '',
           customerName: '',
           customerAddress: '',
           customerEmail: '',
@@ -82,8 +102,11 @@ export class InvoiceComponent implements OnInit {
           itemDescription: '',
           quantity: 1,
           unitPrice: 0,
-          totalAmount: 0
+          totalAmount: 0,
+          gstAmount: 0,
+          supportingDocumentName: ''
         };
+        this.selectedFileName = '';
         this.isSubmitting = false;
       },
       error: (err) => {

@@ -1,0 +1,150 @@
+<div class="invoice-container">
+  <div class="invoice-header">
+    <div>
+      <h2>Invoice Management</h2>
+      <p *ngIf="isVendor">Submit a new vendor invoice for admin/manager approval.</p>
+      <p *ngIf="isAdminOrManager">Review and approve vendor invoices.</p>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <section *ngIf="isVendor" class="invoice-form">
+    <h3>Submit New Invoice</h3>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" [(ngModel)]="invoiceRequest.productName" />
+      </div>
+      <div class="form-group">
+        <label>Company Name</label>
+        <input type="text" [(ngModel)]="invoiceRequest.companyName" />
+      </div>
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" [(ngModel)]="invoiceRequest.location" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Invoice Number</label>
+        <input type="text" [(ngModel)]="invoiceRequest.invoiceNumber" />
+      </div>
+      <div class="form-group">
+        <label>Invoice Raised Date</label>
+        <input type="date" [(ngModel)]="invoiceRequest.invoiceDate" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Customer Name</label>
+      <input type="text" [(ngModel)]="invoiceRequest.customerName" />
+    </div>
+
+    <div class="form-group">
+      <label>Customer Address</label>
+      <textarea rows="2" [(ngModel)]="invoiceRequest.customerAddress"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Customer Email</label>
+      <input type="email" [(ngModel)]="invoiceRequest.customerEmail" />
+    </div>
+
+    <div class="form-group">
+      <label>Customer Phone</label>
+      <input type="text" [(ngModel)]="invoiceRequest.customerPhone" />
+    </div>
+
+    <div class="form-group">
+      <label>Item Description</label>
+      <textarea rows="2" [(ngModel)]="invoiceRequest.itemDescription"></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="number" [(ngModel)]="invoiceRequest.quantity" min="1" (change)="calculateTotal()" />
+      </div>
+      <div class="form-group">
+        <label>Unit Price</label>
+        <input type="number" [(ngModel)]="invoiceRequest.unitPrice" min="0" step="0.01" (change)="calculateTotal()" />
+      </div>
+      <div class="form-group">
+        <label>Invoice Amount</label>
+        <input type="number" [value]="invoiceRequest.totalAmount" readonly />
+      </div>
+      <div class="form-group">
+        <label>GST Amount</label>
+        <input type="number" [(ngModel)]="invoiceRequest.gstAmount" min="0" step="0.01" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Supporting Document</label>
+      <input type="file" (change)="onFileSelected($event)" />
+      <small *ngIf="selectedFileName">Selected: {{ selectedFileName }}</small>
+    </div>
+
+    <button (click)="submitInvoice()" [disabled]="isSubmitting">Submit Invoice</button>
+  </section>
+
+  <section class="invoice-table">
+    <h3>Invoices</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Invoice</th>
+          <th>Vendor</th>
+          <th>Product / Company</th>
+          <th>Amount</th>
+          <th>GST</th>
+          <th>Document</th>
+          <th>Status</th>
+          <th>Submitted At</th>
+          <th *ngIf="isAdminOrManager">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invoice of invoices; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>
+            {{ invoice.invoiceNumber }}<br />
+            <small>{{ invoice.invoiceDate }}</small>
+          </td>
+          <td>
+            {{ invoice.vendorName }}<br />
+            <small>{{ invoice.vendorEmail }}</small>
+          </td>
+          <td>
+            {{ invoice.productName }}<br />
+            <small>{{ invoice.companyName }} • {{ invoice.location }}</small>
+          </td>
+          <td>{{ invoice.totalAmount | currency:'USD' }}</td>
+          <td>{{ invoice.gstAmount | currency:'USD' }}</td>
+          <td>{{ invoice.supportingDocumentName || 'None' }}</td>
+          <td>
+            <span class="status-pill"
+              [ngClass]="{
+                'status-pending': invoice.status === 'PENDING',
+                'status-approved': invoice.status === 'APPROVED',
+                'status-rejected': invoice.status === 'REJECTED'
+              }"
+            >
+              {{ invoice.status }}
+            </span>
+          </td>
+          <td>{{ invoice.submittedAt | date:'medium' }}</td>
+          <td *ngIf="isAdminOrManager" class="action-buttons">
+            <button class="approve" *ngIf="invoice.status === 'PENDING'" (click)="updateStatus(invoice, 'APPROVED')">Approve</button>
+            <button class="reject" *ngIf="invoice.status === 'PENDING'" (click)="updateStatus(invoice, 'REJECTED')">Reject</button>
+            <span *ngIf="invoice.status !== 'PENDING'" class="pending">No action</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
