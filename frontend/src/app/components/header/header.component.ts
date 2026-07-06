@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -15,7 +15,12 @@ export class HeaderComponent implements OnInit {
   isLoggedIn = false;
   menuOpen = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+    effect(() => {
+      this.user = this.authService.currentUser();
+      this.isLoggedIn = !!this.user;
+    });
+  }
 
   ngOnInit(): void {
     this.user = this.authService.currentUser();
