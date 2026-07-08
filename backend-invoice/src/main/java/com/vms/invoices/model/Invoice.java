@@ -1,4 +1,4 @@
-package main.java.com.vms.invoices.model;
+package com.vms.invoices.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
