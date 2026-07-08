@@ -1,6 +1,6 @@
 
 
-package main.java.com.vms.invoices;
+package com.vms.invoices;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
