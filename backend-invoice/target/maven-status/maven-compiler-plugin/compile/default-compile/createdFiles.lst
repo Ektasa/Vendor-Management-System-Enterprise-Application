@@ -1,0 +1,8 @@
+com\vms\invoices\config\KafkaConfig.class
+com\vms\invoices\service\InvoiceConsumerService.class
+com\vms\invoices\controller\InvoiceController.class
+com\vms\invoices\model\Invoice.class
+com\vms\invoices\model\InvoiceEvent.class
+com\vms\invoices\model\Invoice$Status.class
+com\vms\invoices\repository\InvoiceRepository.class
+com\vms\invoices\InvoiceMicroserviceApplication.class
