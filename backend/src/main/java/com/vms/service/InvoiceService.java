@@ -67,8 +67,9 @@ public class InvoiceService {
         invoice.setSubmittedAt(LocalDateTime.now());
         invoice.setCreatedAt(LocalDateTime.now());
 
-        publishInvoiceEvent(invoice);
-        return invoice;
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+        publishInvoiceEvent(savedInvoice);
+        return savedInvoice;
     }
 
     public List<Invoice> getInvoicesForCurrentUser(@NonNull UserDetails userDetails) {
