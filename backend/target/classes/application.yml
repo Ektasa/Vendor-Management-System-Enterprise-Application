@@ -25,10 +25,6 @@ spring:
     consumer:
       group-id: invoice-service-group
       auto-offset-reset: earliest
-
-invoice:
-  topic: invoice-submitted
-  
   jpa:
     hibernate:
       ddl-auto: update
@@ -37,6 +33,9 @@ invoice:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
+
+invoice:
+  topic: invoice-submitted
 
 jwt:
   secret: VmVuZG9yTWFuYWdlbWVudFN5c3RlbUxlbmd0a0tleUZvclNlY3VyZUF1dGhlbnRpY2F0aW9u
