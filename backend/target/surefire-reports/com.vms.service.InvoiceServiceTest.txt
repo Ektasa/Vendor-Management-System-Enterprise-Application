@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: com.vms.service.AuthServiceTest
+Test set: com.vms.service.InvoiceServiceTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.427 s -- in com.vms.service.AuthServiceTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.930 s -- in com.vms.service.InvoiceServiceTest
