@@ -13,14 +13,11 @@ export class InvoiceService {
   constructor(private http: HttpClient) {}
 
   getInvoices(userId?: number, role?: string): Observable<Invoice[]> {
-    if (role === 'VENDOR' && userId) {
-      return this.http.get<Invoice[]>(`${this.microserviceUrl}/vendor/${userId}`);
-    }
-    return this.http.get<Invoice[]>(this.microserviceUrl);
+    return this.http.get<Invoice[]>(this.publisherUrl);
   }
 
   getInvoiceById(id: number): Observable<Invoice> {
-    return this.http.get<Invoice>(`${this.microserviceUrl}/${id}`);
+    return this.http.get<Invoice>(`${this.publisherUrl}/${id}`);
   }
 
   createInvoice(request: InvoiceRequest): Observable<Invoice> {
