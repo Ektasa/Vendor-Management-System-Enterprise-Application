@@ -2,11 +2,15 @@ server:
   port: 8081
 
 spring:
+  application:
+    name: backend-invoice
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     consumer:
       group-id: invoice-service-group
       auto-offset-reset: earliest
+    listener:
+      observation-enabled: true
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/vms_db_01}
     username: ${SPRING_DATASOURCE_USERNAME:root}
@@ -22,3 +26,11 @@ spring:
 
 invoice:
   topic: invoice-submitted
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: ${MANAGEMENT_OTLP_TRACING_ENDPOINT:http://localhost:4318/v1/traces}
