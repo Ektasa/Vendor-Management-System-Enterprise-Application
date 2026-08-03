@@ -25,6 +25,8 @@ spring:
     consumer:
       group-id: invoice-service-group
       auto-offset-reset: earliest
+    template:
+      observation-enabled: true
   jpa:
     hibernate:
       ddl-auto: update
@@ -36,6 +38,14 @@ spring:
 
 invoice:
   topic: invoice-submitted
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: ${MANAGEMENT_OTLP_TRACING_ENDPOINT:http://localhost:4318/v1/traces}
 
 jwt:
   secret: VmVuZG9yTWFuYWdlbWVudFN5c3RlbUxlbmd0a0tleUZvclNlY3VyZUF1dGhlbnRpY2F0aW9u
