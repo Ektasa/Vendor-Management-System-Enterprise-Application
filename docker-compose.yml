@@ -57,6 +57,14 @@ services:
     ports:
       - "2181:2181"
 
+  jaeger:
+    image: jaegertracing/all-in-one:1.53
+    container_name: vms-jaeger
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+
   backend:
     build:
       context: ./backend
@@ -66,12 +74,15 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/vms_db_01
       SPRING_DATASOURCE_PASSWORD: 1234
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      MANAGEMENT_OTLP_TRACING_ENDPOINT: http://jaeger:4318/v1/traces
     ports:
       - "8080:8080"
     depends_on:
       mysql:
         condition: service_healthy
       kafka:
+        condition: service_started
+      jaeger:
         condition: service_started
 
   backend-invoice:
@@ -84,12 +95,15 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      MANAGEMENT_OTLP_TRACING_ENDPOINT: http://jaeger:4318/v1/traces
     ports:
       - "8081:8081"
     depends_on:
       mysql:
         condition: service_healthy
       kafka:
+        condition: service_started
+      jaeger:
         condition: service_started
 
   frontend:
