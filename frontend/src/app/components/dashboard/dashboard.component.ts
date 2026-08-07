@@ -12,7 +12,8 @@ import { Vendor, VendorRequest } from '../../models/vendor.model';
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './dashboard.component.html'
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
 // @NgModule({
 //   imports: [CommonModule, FormsModule, RouterModule],
