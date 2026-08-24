@@ -50,7 +50,7 @@ services:
         KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
 
   zookeeper:
-    image: bitnami/zookeeper:3.9
+    image: soldevelo/zookeeper:3.9
     container_name: vms-zookeeper
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
