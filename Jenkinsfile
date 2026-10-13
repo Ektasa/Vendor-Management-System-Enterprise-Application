@@ -2,17 +2,15 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven-3.9'
+    }
+
     options {
         timestamps()
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Verify Environment') {
             steps {
                 sh 'java -version'
@@ -39,10 +37,10 @@ pipeline {
 
     post {
         success {
-            echo 'VMS backend pipeline completed successfully!'
+            echo 'VMS backend build and tests completed successfully!'
         }
         failure {
-            echo 'Pipeline failed. Check the Console Output.'
+            echo 'Pipeline failed. Check Console Output.'
         }
     }
 }
